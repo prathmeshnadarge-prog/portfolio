@@ -1,140 +1,160 @@
-import { useState, useEffect } from 'react';
-import { Microscope, Calendar, Building2, ChevronRight } from 'lucide-react';
-import { supabase, type Project } from '../lib/supabase';
+import { useState } from 'react';
+import { Calendar, MapPin, ChevronDown } from 'lucide-react';
+
+interface Experience {
+  id: number;
+  title: string;
+  organization: string;
+  period: string;
+  isCurrent: boolean;
+  description: string;
+  highlights: string[];
+}
 
 export default function Research() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [expandedId, setExpandedId] = useState<number | null>(0);
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .order('display_order', { ascending: true });
-
-    if (error) {
-      console.error('Error fetching projects:', error);
-    } else if (data) {
-      setProjects(data);
-    }
-    setLoading(false);
-  };
-
-  const formatDate = (date: string | null) => {
-    if (!date) return 'Present';
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-    });
-  };
-
-  if (loading) {
-    return (
-      <section id="research" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-pulse">
-            <div className="h-12 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-96 mx-auto"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const experiences: Experience[] = [
+    {
+      id: 0,
+      title: 'Project Associate',
+      organization: 'Food Matrix Lab, Indian Agricultural Research Institute, New Delhi',
+      period: 'Dec 2024 - Present',
+      isCurrent: true,
+      description:
+        'Leading end-to-end product development for functional mushroom-derived myconeuticals, including formulation optimization and in-vitro therapeutic validation.',
+      highlights: [
+        'Managing myconeutical product development from experimental design to validation',
+        'Analyzing bioactive compounds using UPLC, LC-MS, and spectroscopic analysis',
+        'Documenting SOPs and experimental data; contributing to manuscript and patent preparation',
+        'Maintaining laboratory quality standards (GLP) and coordinating sample documentation',
+      ],
+    },
+    {
+      id: 1,
+      title: 'M.Sc. Research Scholar',
+      organization: 'Punjab Agricultural University, Ludhiana',
+      period: 'Jan 2022 - Aug 2024',
+      isCurrent: false,
+      description:
+        'Synthesized extracellular selenium nanoparticles via a fungal-mediated green route using Hericium erinaceus and evaluated antimicrobial/antioxidant capacity.',
+      highlights: [
+        'Optimized mycelial growth conditions and substrate formulations for maximum biomass yield',
+        'Screened agro-waste substrates to identify high-yield, low-cost formulations',
+        'Characterized biosynthesized Se-NPs using UV-Vis, TEM, XRD, FTIR, and DLS',
+        'Evaluated antimicrobial and antioxidant capacity with rigorous analytical methods',
+      ],
+    },
+    {
+      id: 2,
+      title: 'Research Intern',
+      organization: 'Punjab Biotechnology Incubator, Mohali',
+      period: 'Jul - Aug 2024',
+      isCurrent: false,
+      description:
+        'Practiced molecular and microbiological analytical techniques within an ISO/IEC 17025:2017 accredited testing environment.',
+      highlights: [
+        'Trained in Laboratory Quality Management Systems (LQMS) across multiple labs',
+        'Mastered molecular and microbiological analytical techniques in accredited setting',
+        'Gained hands-on experience with advanced instrumentation',
+        'Understood quality assurance and regulatory compliance standards',
+      ],
+    },
+  ];
 
   return (
-    <section id="research" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Research & Projects
-          </h2>
-          <div className="w-24 h-1 bg-emerald-600 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Translating multidisciplinary expertise into impactful research at the intersection
-            of mycology, biotechnology, and computational science
+    <section id="experience" className="relative bg-white section-padding">
+      <div className="max-w-4xl mx-auto">
+        <div className="inline-block mb-8">
+          <p className="text-sm font-semibold text-academic-green-500 uppercase tracking-wider">
+            Career Journey
           </p>
         </div>
 
-        <div className="grid gap-8">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group"
-            >
-              <div className="p-8">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center mb-2">
-                      <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-xl mr-4">
-                        {index + 1}
-                      </div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors">
-                        {project.title}
-                      </h3>
-                    </div>
+        <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-12 leading-tight">
+          Research & Industry Experience
+        </h2>
 
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
-                      <div className="flex items-center">
-                        <Building2 className="w-4 h-4 mr-2 text-emerald-600" />
-                        <span className="font-medium">{project.role}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Microscope className="w-4 h-4 mr-2 text-teal-600" />
-                        <span>{project.institution}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                        <span>
-                          {formatDate(project.start_date)} -{' '}
-                          {formatDate(project.end_date)}
-                        </span>
-                      </div>
+        <div className="relative">
+          <div className="absolute left-6 md:left-1/2 md:transform md:-translate-x-1/2 top-0 bottom-0 w-1 bg-academic-green-200"></div>
+
+          <div className="space-y-8">
+            {experiences.map((exp) => (
+              <div key={exp.id} className="relative">
+                <div className="flex gap-8">
+                  <div className="hidden md:flex flex-col items-center">
+                    <div className={`w-12 h-12 rounded-full border-4 ${exp.isCurrent ? 'border-tech-blue-500 bg-tech-blue-50' : 'border-academic-green-500 bg-academic-green-50'} flex items-center justify-center z-10 relative`}>
+                      <div
+                        className={`w-3 h-3 rounded-full ${exp.isCurrent ? 'bg-tech-blue-500' : 'bg-academic-green-500'}`}
+                      ></div>
                     </div>
                   </div>
-                </div>
 
-                <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-                  {project.description}
-                </p>
+                  <div className="md:w-1/2 mb-8">
+                    <button
+                      onClick={() =>
+                        setExpandedId(expandedId === exp.id ? null : exp.id)
+                      }
+                      className="w-full text-left"
+                    >
+                      <div className="bg-white border border-slate-200 rounded-xl p-6 hover:border-slate-300 transition-all cursor-pointer hover:shadow-md">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-serif font-bold text-slate-900 mb-2">
+                              {exp.title}
+                            </h3>
+                            <p className="text-academic-green-600 font-semibold mb-3">
+                              {exp.organization}
+                            </p>
+                          </div>
+                          <ChevronDown
+                            className={`w-5 h-5 text-slate-400 flex-shrink-0 transition-transform ${expandedId === exp.id ? 'transform rotate-180' : ''}`}
+                          />
+                        </div>
 
-                <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                    <ChevronRight className="w-5 h-5 text-emerald-600 mr-1" />
-                    Key Achievements
-                  </h4>
-                  <ul className="space-y-2">
-                    {project.achievements.map((achievement, idx) => (
-                      <li key={idx} className="flex items-start text-gray-700">
-                        <span className="text-emerald-600 mr-2 mt-1">✓</span>
-                        <span>{achievement}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                        <div className="flex flex-wrap gap-4 text-sm text-slate-600 mb-4">
+                          <div className="flex items-center">
+                            <Calendar className="w-4 h-4 mr-2 text-academic-green-500" />
+                            <span>{exp.period}</span>
+                          </div>
+                          {exp.isCurrent && (
+                            <span className="px-3 py-1 bg-tech-blue-50 text-tech-blue-600 rounded-full text-xs font-semibold">
+                              Current
+                            </span>
+                          )}
+                        </div>
 
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-3">
-                    Technologies & Methods
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-800 rounded-full text-sm font-medium border border-emerald-200"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                        <p className="text-slate-700 leading-relaxed">
+                          {exp.description}
+                        </p>
+
+                        {expandedId === exp.id && (
+                          <div className="mt-6 pt-6 border-t border-slate-200 animate-slide-up">
+                            <h4 className="font-semibold text-slate-900 mb-4">
+                              Key Highlights
+                            </h4>
+                            <ul className="space-y-3">
+                              {exp.highlights.map((highlight, idx) => (
+                                <li
+                                  key={idx}
+                                  className="flex items-start text-slate-700"
+                                >
+                                  <span className="text-academic-green-500 mr-3 mt-1 font-bold">
+                                    ✓
+                                  </span>
+                                  <span>{highlight}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

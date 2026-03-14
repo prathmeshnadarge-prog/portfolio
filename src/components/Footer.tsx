@@ -1,65 +1,91 @@
-import { Heart } from 'lucide-react';
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
+    <footer className="relative bg-slate-900 text-slate-50 py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-16 mb-16">
           <div>
-            <h3 className="text-2xl font-bold mb-4">Prathmesh Nadarge</h3>
-            <p className="text-gray-300 leading-relaxed">
-              Mycologist & Applied Microbiologist specializing in functional mushroom research
-              and AI/ML applications in agriculture.
+            <h3 className="text-2xl font-serif font-bold text-white mb-4">
+              Prathmesh Nadarge
+            </h3>
+            <p className="text-slate-300 leading-relaxed max-w-md">
+              Mycologist & Applied Microbiologist bridging fungal biotechnology with AI-driven
+              predictive modelling. Passionate about advancing agricultural science and nutraceutical development.
             </p>
           </div>
 
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <div className="space-y-2">
-              {[
-                { label: 'About', href: '#about' },
-                { label: 'Research', href: '#research' },
-                { label: 'Publications', href: '#publications' },
-                { label: 'Skills', href: '#skills' },
-                { label: 'Contact', href: '#contact' },
-              ].map((link) => (
-                <button
-                  key={link.label}
-                  onClick={() =>
-                    document
-                      .querySelector(link.href)
-                      ?.scrollIntoView({ behavior: 'smooth' })
-                  }
-                  className="block text-gray-300 hover:text-emerald-400 transition-colors"
-                >
-                  {link.label}
-                </button>
-              ))}
+          <div className="grid grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+                Navigate
+              </h4>
+              <div className="space-y-2">
+                {[
+                  { label: 'Home', id: 'home' },
+                  { label: 'About', id: 'about' },
+                  { label: 'Experience', id: 'experience' },
+                  { label: 'Skills', id: 'skills' },
+                ].map((link) => (
+                  <button
+                    key={link.id}
+                    onClick={() => scrollToSection(link.id)}
+                    className="block text-slate-300 hover:text-academic-green-400 transition-colors text-sm"
+                  >
+                    {link.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Research Focus</h4>
-            <ul className="space-y-2 text-gray-300">
-              <li>Functional Mushroom Biology</li>
-              <li>Nutraceutical Development</li>
-              <li>Mycelium Biotechnology</li>
-              <li>AI/ML in Agriculture</li>
-              <li>Green Nanotechnology</li>
-            </ul>
+            <div>
+              <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+                Resources
+              </h4>
+              <div className="space-y-2">
+                {[
+                  { label: 'Publications', id: 'publications' },
+                  { label: 'Contact', id: 'contact' },
+                  { label: 'LinkedIn', url: 'https://linkedin.com/in/prathmesh-nadarge' },
+                ].map((link) => (
+                  <div key={link.label || link.url}>
+                    {link.url ? (
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-slate-300 hover:text-academic-green-400 transition-colors text-sm"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => scrollToSection(link.id || '')}
+                        className="block text-slate-300 hover:text-academic-green-400 transition-colors text-sm"
+                      >
+                        {link.label}
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 pt-8 text-center">
-          <p className="text-gray-300 flex items-center justify-center">
-            Made with <Heart className="w-4 h-4 mx-2 text-red-500 fill-current" /> for
-            advancing mycological research
-          </p>
-          <p className="text-gray-400 text-sm mt-2">
-            {currentYear} Prathmesh Nadarge. All rights reserved.
-          </p>
+        <div className="border-t border-slate-700 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-slate-400 text-sm">
+              {currentYear} Prathmesh Nadarge. All rights reserved.
+            </p>
+            <p className="text-slate-400 text-sm">
+              Advancing agricultural science through rigorous research and innovation.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

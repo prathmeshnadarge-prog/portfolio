@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 const navItems = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
-  { label: 'Research', href: '#research' },
+  { label: 'Experience', href: '#experience' },
   { label: 'Publications', href: '#publications' },
   { label: 'Skills', href: '#skills' },
   { label: 'Contact', href: '#contact' },
@@ -50,7 +50,7 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-md'
+          ? 'bg-white/95 backdrop-blur-lg shadow-sm border-b border-slate-200'
           : 'bg-transparent'
       }`}
     >
@@ -58,25 +58,25 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16 sm:h-20">
           <button
             onClick={() => scrollToSection('#home')}
-            className={`text-xl sm:text-2xl font-bold transition-colors ${
-              isScrolled ? 'text-gray-900' : 'text-white'
+            className={`text-lg sm:text-xl font-serif font-bold transition-colors ${
+              isScrolled ? 'text-slate-900' : 'text-white'
             }`}
           >
             Prathmesh Nadarge
           </button>
 
-          <div className="hidden md:flex space-x-1 lg:space-x-2">
+          <div className="hidden md:flex space-x-1">
             {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className={`px-3 lg:px-4 py-2 rounded-lg text-sm lg:text-base font-medium transition-all ${
+                className={`px-3 lg:px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeSection === item.href.substring(1)
                     ? isScrolled
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-white text-emerald-600'
+                      ? 'bg-academic-green-500 text-white'
+                      : 'bg-white text-academic-green-600'
                     : isScrolled
-                    ? 'text-gray-700 hover:bg-gray-100'
+                    ? 'text-slate-700 hover:bg-slate-100'
                     : 'text-white hover:bg-white/10'
                 }`}
               >
@@ -89,7 +89,7 @@ export default function Navigation() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`md:hidden p-2 rounded-lg transition-colors ${
               isScrolled
-                ? 'text-gray-900 hover:bg-gray-100'
+                ? 'text-slate-900 hover:bg-slate-100'
                 : 'text-white hover:bg-white/10'
             }`}
           >
@@ -99,7 +99,7 @@ export default function Navigation() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t">
+        <div className="md:hidden bg-white border-t border-slate-200">
           <div className="px-4 py-3 space-y-1">
             {navItems.map((item) => (
               <button
@@ -107,8 +107,8 @@ export default function Navigation() {
                 onClick={() => scrollToSection(item.href)}
                 className={`block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors ${
                   activeSection === item.href.substring(1)
-                    ? 'bg-emerald-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-academic-green-500 text-white'
+                    : 'text-slate-700 hover:bg-slate-100'
                 }`}
               >
                 {item.label}

@@ -1,186 +1,212 @@
-import { useState, useEffect } from 'react';
-import { BookOpen, Award, FileText, Scroll } from 'lucide-react';
-import { supabase, type Publication } from '../lib/supabase';
+import { BookOpen, FileText, Lightbulb, Trophy } from 'lucide-react';
 
-const publicationTypes = {
-  journal_article: { label: 'Journal Articles', icon: BookOpen, color: 'emerald' },
-  book_chapter: { label: 'Book Chapters', icon: Scroll, color: 'teal' },
-  conference: { label: 'Conference Papers', icon: FileText, color: 'blue' },
-  patent: { label: 'Patents', icon: Award, color: 'amber' },
-};
+interface Publication {
+  id: string;
+  type: 'journal' | 'book' | 'patent' | 'conference';
+  title: string;
+  authors: string;
+  details: string;
+  status: string;
+  impact?: string;
+}
 
-const statusColors = {
-  published: 'bg-green-100 text-green-800 border-green-200',
-  accepted: 'bg-blue-100 text-blue-800 border-blue-200',
-  under_review: 'bg-amber-100 text-amber-800 border-amber-200',
-};
+const publications: Publication[] = [
+  {
+    id: '1',
+    type: 'journal',
+    title: 'Myco-biosynthesis and characterization of selenium nanoparticles using Hericium erinaceus with antimicrobial and antioxidant potential',
+    authors: 'Nadarge, P., Sharma, S., & Kalia, A.',
+    details: 'International Journal of Medicinal Mushrooms',
+    status: 'Accepted',
+    impact: 'IF: 1.4',
+  },
+  {
+    id: '2',
+    type: 'journal',
+    title: 'Myco-Assisted Silica Nanoparticles: A Review',
+    authors: 'Debbarma, S., Sharma, S., Kalia, A., Kaur, H., Singh, L. M., & Nadarge, P.',
+    details: 'Silicon',
+    status: 'Published',
+    impact: 'IF: 3.0',
+  },
+  {
+    id: '3',
+    type: 'book',
+    title: 'Managing Agriculture Residue through Mushroom Cultivation: A Solution to Stubble Burning',
+    authors: 'Nadarge, P.',
+    details: 'Microbial Interventions to Achieve the United Nations Sustainable Development Goals',
+    status: 'Published',
+    impact: 'ISBN: 987-93-5747-065-0',
+  },
+  {
+    id: '4',
+    type: 'patent',
+    title: 'Mycoceutical Formulation Derived from Hericium erinaceus and Method of Preparation Thereof',
+    authors: 'Nadarge, P.',
+    details: 'Patent Application',
+    status: 'Under Development',
+  },
+  {
+    id: '5',
+    type: 'conference',
+    title: 'Medicinal Mushroom: A Potential Solution for Honey Bee Health',
+    authors: 'Nadarge, P.',
+    details: '65th Annual AMI Conference on Perspectives of Microbes for Human Welfare, Guru Jambheshwar University, Hisar, Nov 2024',
+    status: 'Presented',
+  },
+];
 
 export default function Publications() {
-  const [publications, setPublications] = useState<Publication[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedType, setSelectedType] = useState<string>('all');
-
-  useEffect(() => {
-    fetchPublications();
-  }, []);
-
-  const fetchPublications = async () => {
-    const { data, error } = await supabase
-      .from('publications')
-      .select('*')
-      .order('year', { ascending: false })
-      .order('display_order', { ascending: true });
-
-    if (error) {
-      console.error('Error fetching publications:', error);
-    } else if (data) {
-      setPublications(data);
-    }
-    setLoading(false);
+  const typeConfig = {
+    journal: {
+      icon: BookOpen,
+      label: 'Journal Articles',
+      color: 'academic-green',
+    },
+    book: { icon: FileText, label: 'Book Chapters', color: 'tech-blue' },
+    patent: { icon: Lightbulb, label: 'Patents & Innovations', color: 'amber' },
+    conference: {
+      icon: Trophy,
+      label: 'Conference Presentations',
+      color: 'orange',
+    },
   };
 
-  const filteredPublications =
-    selectedType === 'all'
-      ? publications
-      : publications.filter((pub) => pub.type === selectedType);
-
-  const groupedPublications = filteredPublications.reduce((acc, pub) => {
-    if (!acc[pub.type]) {
-      acc[pub.type] = [];
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Published':
+        return 'bg-academic-green-50 text-academic-green-700 border-academic-green-200';
+      case 'Accepted':
+        return 'bg-tech-blue-50 text-tech-blue-700 border-tech-blue-200';
+      case 'Presented':
+        return 'bg-amber-50 text-amber-700 border-amber-200';
+      case 'Under Development':
+        return 'bg-orange-50 text-orange-700 border-orange-200';
+      default:
+        return 'bg-slate-50 text-slate-700 border-slate-200';
     }
-    acc[pub.type].push(pub);
-    return acc;
-  }, {} as Record<string, Publication[]>);
+  };
 
-  if (loading) {
+  const groupedByType = publications.reduce(
+    (acc, pub) => {
+      if (!acc[pub.type]) {
+        acc[pub.type] = [];
+      }
+      acc[pub.type].push(pub);
+      return acc;
+    },
+    {} as Record<string, Publication[]>
+  );
+
+  const renderPublicationCard = (pub: Publication) => {
+    const Config = typeConfig[pub.type];
+    const Icon = Config.icon;
+
     return (
-      <section id="publications" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-pulse">
-            <div className="h-12 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
+      <div key={pub.id} className="bg-white border border-slate-200 rounded-lg p-6 hover:border-slate-300 transition-colors hover:shadow-md">
+        <div className="flex items-start gap-4 mb-4">
+          <div className={`p-3 bg-${Config.color}-50 rounded-lg flex-shrink-0`}>
+            <Icon className={`w-6 h-6 text-${Config.color}-600`} />
+          </div>
+          <div className="flex-1">
+            <h4 className="text-lg font-serif font-bold text-slate-900 mb-2 leading-snug">
+              {pub.title}
+            </h4>
+            <p className="text-sm text-slate-600 mb-2">{pub.authors}</p>
+            <p className="text-sm font-medium text-slate-700 mb-3">{pub.details}</p>
           </div>
         </div>
-      </section>
+
+        <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(pub.status)}`}
+          >
+            {pub.status}
+          </span>
+          {pub.impact && (
+            <span className="text-xs font-semibold text-slate-600">
+              {pub.impact}
+            </span>
+          )}
+        </div>
+      </div>
     );
-  }
+  };
 
   return (
-    <section id="publications" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Publications & Presentations
-          </h2>
-          <div className="w-24 h-1 bg-emerald-600 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Peer-reviewed research contributions advancing the field of mycology and
-            biotechnology
+    <section id="publications" className="relative bg-slate-50 section-padding">
+      <div className="max-w-6xl mx-auto">
+        <div className="inline-block mb-8">
+          <p className="text-sm font-semibold text-academic-green-500 uppercase tracking-wider">
+            Research Contributions
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          <button
-            onClick={() => setSelectedType('all')}
-            className={`px-6 py-3 rounded-lg font-medium transition-all ${
-              selectedType === 'all'
-                ? 'bg-emerald-600 text-white shadow-lg'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            All Publications
-          </button>
-          {Object.entries(publicationTypes).map(([type, config]) => {
-            const Icon = config.icon;
-            const count = publications.filter((p) => p.type === type).length;
-            return (
-              <button
-                key={type}
-                onClick={() => setSelectedType(type)}
-                className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center ${
-                  selectedType === type
-                    ? `bg-${config.color}-600 text-white shadow-lg`
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                <Icon className="w-4 h-4 mr-2" />
-                {config.label} ({count})
-              </button>
-            );
-          })}
-        </div>
+        <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-4 leading-tight">
+          Selected Publications & Innovations
+        </h2>
 
-        <div className="space-y-12">
-          {Object.entries(groupedPublications).map(([type, pubs]) => {
-            const config = publicationTypes[type as keyof typeof publicationTypes];
-            const Icon = config.icon;
+        <p className="text-lg text-slate-600 mb-16 max-w-3xl">
+          Peer-reviewed research and innovations advancing fungal biotechnology and agricultural applications
+        </p>
 
-            return (
-              <div key={type} className="space-y-6">
-                <div className="flex items-center mb-6">
-                  <div
-                    className={`p-3 bg-gradient-to-br from-${config.color}-500 to-${config.color}-600 rounded-lg mr-4`}
-                  >
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900">{config.label}</h3>
-                  <span className="ml-3 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
-                    {pubs.length}
-                  </span>
+        {Object.entries(groupedByType).map(([type, pubs]) => {
+          const Config = typeConfig[type as keyof typeof typeConfig];
+
+          return (
+            <div key={type} className="mb-16">
+              <div className="flex items-center gap-3 mb-8">
+                <div className={`p-2 bg-${Config.color}-50 rounded-lg`}>
+                  <Config.icon
+                    className={`w-6 h-6 text-${Config.color}-600`}
+                  />
                 </div>
-
-                <div className="grid gap-6">
-                  {pubs.map((pub) => (
-                    <div
-                      key={pub.id}
-                      className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border-2 border-gray-100 hover:border-emerald-200 hover:shadow-lg transition-all"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h4 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
-                            {pub.title}
-                          </h4>
-                          <p className="text-gray-600 mb-2">{pub.authors}</p>
-                          {pub.publication && (
-                            <p className="text-emerald-700 font-medium italic">
-                              {pub.publication}
-                            </p>
-                          )}
-                        </div>
-                        <div className="ml-4 flex flex-col items-end gap-2">
-                          <span className="text-2xl font-bold text-gray-900">
-                            {pub.year}
-                          </span>
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-semibold border ${
-                              statusColors[pub.status]
-                            }`}
-                          >
-                            {pub.status.replace('_', ' ').toUpperCase()}
-                          </span>
-                          {pub.impact_factor && (
-                            <span className="px-3 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 rounded-full text-xs font-semibold border border-amber-200">
-                              IF: {pub.impact_factor}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <h3 className="text-2xl font-serif font-bold text-slate-900">
+                  {Config.label}
+                </h3>
+                <div className="h-0.5 flex-1 bg-slate-200"></div>
+                <span className="text-sm font-semibold text-slate-600">
+                  {pubs.length}
+                </span>
               </div>
-            );
-          })}
-        </div>
 
-        <div className="mt-16 text-center">
-          <div className="inline-block bg-gradient-to-r from-emerald-50 to-teal-50 px-8 py-6 rounded-2xl border border-emerald-100">
-            <p className="text-lg text-gray-700">
-              <span className="font-bold text-emerald-700">
-                {publications.length} publications
-              </span>{' '}
-              contributing to advances in mycology, nanotechnology, and sustainable
-              agriculture
-            </p>
+              <div className="grid md:grid-cols-2 gap-6">
+                {pubs.map(renderPublicationCard)}
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="mt-16 p-8 bg-white border border-slate-200 rounded-xl">
+          <h3 className="text-xl font-serif font-bold text-slate-900 mb-4">
+            Research Impact Metrics
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div>
+              <div className="text-4xl font-bold text-academic-green-600 mb-2">
+                2
+              </div>
+              <p className="text-slate-700 font-medium">
+                Peer-Reviewed Publications
+              </p>
+              <p className="text-sm text-slate-600">Combined IF: 4.4</p>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-tech-blue-600 mb-2">
+                1
+              </div>
+              <p className="text-slate-700 font-medium">Book Chapter</p>
+              <p className="text-sm text-slate-600">
+                UN SDG Aligned
+              </p>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-amber-600 mb-2">
+                1
+              </div>
+              <p className="text-slate-700 font-medium">Patent</p>
+              <p className="text-sm text-slate-600">Under Development</p>
+            </div>
           </div>
         </div>
       </div>

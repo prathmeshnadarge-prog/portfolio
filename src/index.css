@@ -1,3 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-slate-900 font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-bold;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl;
+  }
+
+  .accent-green {
+    @apply text-academic-green-500;
+  }
+
+  .accent-blue {
+    @apply text-tech-blue-500;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-20 md:py-32;
+  }
+
+  .button-primary {
+    @apply px-6 py-3 bg-academic-green-500 text-white rounded-lg font-semibold hover:bg-academic-green-600 transition-colors duration-300;
+  }
+
+  .button-secondary {
+    @apply px-6 py-3 border-2 border-academic-green-500 text-academic-green-500 rounded-lg font-semibold hover:bg-academic-green-50 transition-colors duration-300;
+  }
+}

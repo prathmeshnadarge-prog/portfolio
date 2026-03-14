@@ -1,135 +1,75 @@
-import { GraduationCap, Award, Target } from 'lucide-react';
-
 export default function About() {
   return (
-    <section id="about" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            About Me
-          </h2>
-          <div className="w-24 h-1 bg-emerald-600 mx-auto"></div>
+    <section id="about" className="relative bg-white section-padding">
+      <div className="max-w-5xl mx-auto">
+        <div className="inline-block mb-8">
+          <p className="text-sm font-semibold text-academic-green-500 uppercase tracking-wider">
+            Executive Summary
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          <div className="space-y-6">
-            <p className="text-lg text-gray-700 leading-relaxed">
-              I am a mycologist and applied microbiologist with expertise in AI/ML modeling
-              and computer vision. My research bridges traditional fungal biotechnology with
-              cutting-edge computational approaches to address challenges in sustainable
-              agriculture and nutraceutical development.
-            </p>
+        <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-12 leading-tight">
+          About My Research & Expertise
+        </h2>
 
-            <p className="text-lg text-gray-700 leading-relaxed">
-              My work focuses on functional mushroom biology, particularly{' '}
-              <span className="font-semibold text-emerald-700">
-                Hericium erinaceus
-              </span>{' '}
-              (Lion's Mane), where I\'ve developed optimized cultivation protocols, synthesized
-              bioactive nanoparticles, and advanced myconeutical product formulations with
-              demonstrated therapeutic potential.
-            </p>
+        <div className="prose prose-slate max-w-none">
+          <p className="text-lg text-slate-700 leading-relaxed mb-6">
+            I am an agricultural microbiologist specializing in fungal cultivation, functional mushroom biology,
+            and the characterization of bioactive compounds. My research spans myconeutical product development
+            and in-vitro therapeutic validation.
+          </p>
 
-            <p className="text-lg text-gray-700 leading-relaxed">
-              I combine laboratory expertise in fermentation technology, biochemical
-              characterization, and nanoparticle synthesis with computational skills in machine
-              learning, computer vision, and statistical modeling to drive innovation in
-              agricultural research.
-            </p>
+          <p className="text-lg text-slate-700 leading-relaxed mb-6">
+            I am passionate about translating this multidisciplinary foundation into rigorous doctoral research
+            in soil-plant microbiome interactions, while leveraging machine learning and computer vision to unlock
+            insights from complex biological systems.
+          </p>
 
-            <div className="pt-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Target className="w-6 h-6 mr-2 text-emerald-600" />
-                Research Interests
+          <div className="grid md:grid-cols-2 gap-8 mt-12">
+            <div className="glass-card p-8 bg-white border border-slate-200 rounded-xl">
+              <h3 className="text-xl font-serif font-bold text-academic-green-600 mb-4">
+                Research Focus
               </h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className="space-y-3 text-slate-700">
                 <li className="flex items-start">
-                  <span className="text-emerald-600 mr-2">•</span>
-                  Functional mushroom biology and cultivation optimization
+                  <span className="mr-3 text-academic-green-500 font-bold mt-1">•</span>
+                  <span>Fungal cultivation and fermentation technology</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-emerald-600 mr-2">•</span>
-                  Nutraceutical and myconeutical product development
+                  <span className="mr-3 text-academic-green-500 font-bold mt-1">•</span>
+                  <span>Myconeutical product development</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-emerald-600 mr-2">•</span>
-                  Mycelium biotechnology and sustainable applications
+                  <span className="mr-3 text-academic-green-500 font-bold mt-1">•</span>
+                  <span>Bioactive compound characterization</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-emerald-600 mr-2">•</span>
-                  Bio-nanoparticle synthesis and characterization
-                </li>
-                <li className="flex items-start">
-                  <span className="text-emerald-600 mr-2">•</span>
-                  AI/ML applications in agricultural research
+                  <span className="mr-3 text-academic-green-500 font-bold mt-1">•</span>
+                  <span>In-vitro therapeutic validation</span>
                 </li>
               </ul>
             </div>
-          </div>
 
-          <div className="space-y-6">
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-2xl border border-emerald-100">
-              <div className="flex items-center mb-6">
-                <GraduationCap className="w-8 h-8 text-emerald-600 mr-3" />
-                <h3 className="text-2xl font-bold text-gray-900">Education</h3>
-              </div>
-
-              <div className="space-y-6">
-                <div className="border-l-4 border-emerald-600 pl-4">
-                  <h4 className="font-bold text-lg text-gray-900">
-                    M.Sc. in Microbiology
-                  </h4>
-                  <p className="text-gray-600 font-medium">
-                    Punjab Agricultural University, Ludhiana
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">2022 - 2024 | OGPA: 7.78/10</p>
-                  <p className="text-sm text-gray-700 mt-2 italic">
-                    Thesis: Standardization of Biomass and Fruit Body Production of{' '}
-                    <em>Hericium erinaceus</em> Under Submerged and Solid-State Fermentation
-                  </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Advisor: Dr. Shivani Sharma, PhD
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-teal-500 pl-4">
-                  <h4 className="font-bold text-lg text-gray-900">
-                    B.Sc. in Agriculture (Hons.)
-                  </h4>
-                  <p className="text-gray-600 font-medium">
-                    Vasantrao Naik Marathwada Krishi Vidyapeeth, Parbhani
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">2017 - 2021 | CGPA: 7.53/10</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl border border-amber-100">
-              <div className="flex items-center mb-6">
-                <Award className="w-8 h-8 text-amber-600 mr-3" />
-                <h3 className="text-2xl font-bold text-gray-900">Recognition</h3>
-              </div>
-
-              <ul className="space-y-3 text-gray-700">
+            <div className="glass-card p-8 bg-white border border-slate-200 rounded-xl">
+              <h3 className="text-xl font-serif font-bold text-tech-blue-600 mb-4">
+                Methodological Approach
+              </h3>
+              <ul className="space-y-3 text-slate-700">
                 <li className="flex items-start">
-                  <span className="text-amber-600 mr-2 mt-1">✓</span>
-                  <span>
-                    <strong>All India Rank 442</strong> in ICAR-AIEEA (Plant Science)
-                  </span>
+                  <span className="mr-3 text-tech-blue-500 font-bold mt-1">•</span>
+                  <span>Data-driven experimental design</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-amber-600 mr-2 mt-1">✓</span>
-                  <span>National Talent Search Scholarship for M.Sc. studies</span>
+                  <span className="mr-3 text-tech-blue-500 font-bold mt-1">•</span>
+                  <span>Machine learning & computer vision</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-amber-600 mr-2 mt-1">✓</span>
-                  <span>
-                    Published in peer-reviewed journals (IF: 3.0, 1.4)
-                  </span>
+                  <span className="mr-3 text-tech-blue-500 font-bold mt-1">•</span>
+                  <span>Rigorous statistical analysis</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-amber-600 mr-2 mt-1">✓</span>
-                  <span>Patent application under development</span>
+                  <span className="mr-3 text-tech-blue-500 font-bold mt-1">•</span>
+                  <span>Predictive modelling systems</span>
                 </li>
               </ul>
             </div>

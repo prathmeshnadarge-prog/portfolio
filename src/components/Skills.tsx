@@ -1,173 +1,116 @@
-import { useState, useEffect } from 'react';
-import { FlaskRound as Flask, Dna, BarChart3, Code, Sprout } from 'lucide-react';
-import { supabase, type Skill } from '../lib/supabase';
-
-const categoryConfig = {
-  laboratory: {
-    label: 'Laboratory Techniques',
-    icon: Flask,
-    color: 'from-emerald-500 to-teal-600',
-  },
-  molecular: {
-    label: 'Molecular Biology',
-    icon: Dna,
-    color: 'from-blue-500 to-cyan-600',
-  },
-  analytical: {
-    label: 'Analytical Methods',
-    icon: BarChart3,
-    color: 'from-violet-500 to-purple-600',
-  },
-  computational: {
-    label: 'Computational Skills',
-    icon: Code,
-    color: 'from-orange-500 to-red-600',
-  },
-  field: {
-    label: 'Field & Applied',
-    icon: Sprout,
-    color: 'from-green-500 to-emerald-600',
-  },
-};
-
-const proficiencyLevels = {
-  expert: { label: 'Expert', width: 'w-full', color: 'bg-emerald-600' },
-  advanced: { label: 'Advanced', width: 'w-4/5', color: 'bg-teal-500' },
-  intermediate: { label: 'Intermediate', width: 'w-3/5', color: 'bg-blue-400' },
-};
+import { FlaskConical, Brain } from 'lucide-react';
 
 export default function Skills() {
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [loading, setLoading] = useState(true);
+  const biologicalSkills = [
+    { title: 'Microbial culturing & maintenance', icon: 'test-tube' },
+    { title: 'Fermentation technology (submerged/solid-state)', icon: 'flask' },
+    { title: 'PCR amplification & DNA/RNA extraction', icon: 'dna' },
+    { title: 'Gel electrophoresis & agarose analysis', icon: 'lab' },
+    { title: 'Microscopy (compound, fluorescence, confocal)', icon: 'microscope' },
+    { title: 'UV-Vis, FTIR, XRD, DLS spectroscopy', icon: 'wavelength' },
+    { title: 'UPLC & chromatographic techniques', icon: 'chart' },
+    { title: 'Biochemical profiling & assays', icon: 'beaker' },
+  ];
 
-  useEffect(() => {
-    fetchSkills();
-  }, []);
+  const computationalSkills = [
+    { title: 'Python (NumPy, Pandas, Matplotlib, Seaborn)', icon: 'code' },
+    { title: 'ML/DL Frameworks (TensorFlow, PyTorch, Keras)', icon: 'neural' },
+    { title: 'Computer Vision (YOLO, U-Net, DeepLab)', icon: 'eye' },
+    { title: 'Statistical Analysis (R, SPSS, DOE)', icon: 'graph' },
+    { title: 'ANOVA & regression modelling', icon: 'chart' },
+    { title: 'Experimental design & optimization', icon: 'layers' },
+    { title: 'Data preprocessing & image labelling', icon: 'image' },
+    { title: 'Flask API deployment & integration', icon: 'server' },
+  ];
 
-  const fetchSkills = async () => {
-    const { data, error } = await supabase
-      .from('skills')
-      .select('*')
-      .order('display_order', { ascending: true });
-
-    if (error) {
-      console.error('Error fetching skills:', error);
-    } else if (data) {
-      setSkills(data);
-    }
-    setLoading(false);
-  };
-
-  const groupedSkills = skills.reduce((acc, skill) => {
-    if (!acc[skill.category]) {
-      acc[skill.category] = [];
-    }
-    acc[skill.category].push(skill);
-    return acc;
-  }, {} as Record<string, Skill[]>);
-
-  if (loading) {
-    return (
-      <section id="skills" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-pulse">
-            <div className="h-12 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const SkillCard = ({ skill }: { skill: { title: string; icon: string } }) => (
+    <div className="p-4 bg-white border border-slate-200 rounded-lg hover:border-slate-300 transition-colors">
+      <p className="font-medium text-slate-900 text-sm">{skill.title}</p>
+    </div>
+  );
 
   return (
-    <section id="skills" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Technical Expertise
-          </h2>
-          <div className="w-24 h-1 bg-emerald-600 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive skillset spanning wet-lab techniques, advanced instrumentation, and
-            computational analysis
+    <section id="skills" className="relative bg-slate-50 section-padding">
+      <div className="max-w-6xl mx-auto">
+        <div className="inline-block mb-8">
+          <p className="text-sm font-semibold text-academic-green-500 uppercase tracking-wider">
+            Core Competencies
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {Object.entries(groupedSkills).map(([category, categorySkills]) => {
-            const config =
-              categoryConfig[category as keyof typeof categoryConfig];
-            const Icon = config.icon;
+        <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-4 leading-tight">
+          Dual-Pillar Expertise
+        </h2>
 
-            return (
-              <div
-                key={category}
-                className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-shadow"
-              >
-                <div className="flex items-center mb-6">
-                  <div
-                    className={`p-3 bg-gradient-to-br ${config.color} rounded-lg mr-4`}
-                  >
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900">
-                    {config.label}
-                  </h3>
-                </div>
+        <p className="text-lg text-slate-600 mb-16 max-w-3xl">
+          Bridging classical biological sciences with cutting-edge computational techniques
+        </p>
 
-                <div className="space-y-6">
-                  {categorySkills.map((skill) => {
-                    const proficiency =
-                      proficiencyLevels[skill.proficiency];
-
-                    return (
-                      <div key={skill.id} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="font-semibold text-gray-900">
-                            {skill.name}
-                          </span>
-                          <span className="text-sm font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
-                            {proficiency.label}
-                          </span>
-                        </div>
-                        {skill.description && (
-                          <p className="text-sm text-gray-600">
-                            {skill.description}
-                          </p>
-                        )}
-                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                          <div
-                            className={`h-full ${proficiency.color} ${proficiency.width} rounded-full transition-all duration-1000 ease-out`}
-                          ></div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+        <div className="grid md:grid-cols-2 gap-12">
+          <div>
+            <div className="flex items-center mb-8">
+              <div className="p-3 bg-academic-green-50 rounded-lg mr-4">
+                <FlaskConical className="w-8 h-8 text-academic-green-600" />
               </div>
-            );
-          })}
+              <h3 className="text-3xl font-serif font-bold text-academic-green-700">
+                Biological & Analytical Sciences
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              {biologicalSkills.map((skill, idx) => (
+                <SkillCard key={idx} skill={skill} />
+              ))}
+            </div>
+
+            <div className="mt-8 p-6 bg-academic-green-50 border border-academic-green-200 rounded-lg">
+              <p className="text-sm text-academic-green-900 font-medium">
+                Proficiency: Expert level in fungal cultivation, nanoparticle synthesis, and biochemical characterization
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center mb-8">
+              <div className="p-3 bg-tech-blue-50 rounded-lg mr-4">
+                <Brain className="w-8 h-8 text-tech-blue-600" />
+              </div>
+              <h3 className="text-3xl font-serif font-bold text-tech-blue-700">
+                AI/ML & Computational Data
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              {computationalSkills.map((skill, idx) => (
+                <SkillCard key={idx} skill={skill} />
+              ))}
+            </div>
+
+            <div className="mt-8 p-6 bg-tech-blue-50 border border-tech-blue-200 rounded-lg">
+              <p className="text-sm text-tech-blue-900 font-medium">
+                Proficiency: Advanced in model development, computer vision, and predictive analytics for agricultural applications
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-16 grid md:grid-cols-3 gap-8">
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-2xl border border-emerald-100 text-center">
-            <div className="text-4xl font-bold text-emerald-600 mb-2">5+</div>
-            <p className="text-gray-700 font-medium">
-              Advanced Analytical Instruments
-            </p>
+        <div className="mt-16 grid md:grid-cols-3 gap-6">
+          <div className="p-8 bg-white border border-slate-200 rounded-xl text-center hover:border-slate-300 transition-colors">
+            <div className="text-5xl font-bold text-academic-green-600 mb-3">10+</div>
+            <p className="text-slate-700 font-medium">Mushroom Species Mastered</p>
+            <p className="text-sm text-slate-600 mt-2">Cultivation & characterization</p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-2xl border border-blue-100 text-center">
-            <div className="text-4xl font-bold text-blue-600 mb-2">10+</div>
-            <p className="text-gray-700 font-medium">
-              Mushroom Species Cultivated
-            </p>
+          <div className="p-8 bg-white border border-slate-200 rounded-xl text-center hover:border-slate-300 transition-colors">
+            <div className="text-5xl font-bold text-tech-blue-600 mb-3">5+</div>
+            <p className="text-slate-700 font-medium">Advanced Instruments</p>
+            <p className="text-sm text-slate-600 mt-2">UPLC, XRD, DLS, FTIR, UV-Vis</p>
           </div>
 
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl border border-amber-100 text-center">
-            <div className="text-4xl font-bold text-amber-600 mb-2">3</div>
-            <p className="text-gray-700 font-medium">
-              Programming Languages (Python, R, SQL)
-            </p>
+          <div className="p-8 bg-white border border-slate-200 rounded-xl text-center hover:border-slate-300 transition-colors">
+            <div className="text-5xl font-bold text-slate-600 mb-3">3+</div>
+            <p className="text-slate-700 font-medium">Programming Languages</p>
+            <p className="text-sm text-slate-600 mt-2">Python, R, SQL + ML frameworks</p>
           </div>
         </div>
       </div>
